@@ -58,7 +58,6 @@ var rootCmd = &cobra.Command{
 		client.ClientSet = clientSet
 		common.PrintInfo(client.ClientSet, config)
 		if cleanup {
-			common.SetDefaultNamespace()
 			service.Cleanup(client.ClientSet)
 		} else if listImages {
 			service.PrintListImages(client.ClientSet)
@@ -112,7 +111,7 @@ func init() {
 
 	rootCmd.Flags().BoolVar(&conformance, "conformance", false, "run conformance tests.")
 
-	rootCmd.Flags().StringVar(&focus, "focus", "", "focus runs a specific e2e test. e.g. - sig-auth. allows regular expressions.")
+	rootCmd.Flags().StringVar(&focus, "focus", common.DefaultFocus, "focus runs a specific e2e test. e.g. - sig-auth. allows regular expressions.")
 	viper.BindPFlag("focus", rootCmd.Flags().Lookup("focus"))
 
 	rootCmd.Flags().StringVar(&skip, "skip", "", "skip specific tests. allows regular expressions.")
@@ -121,10 +120,10 @@ func init() {
 	rootCmd.Flags().StringVar(&conformanceImage, "conformance-image", "", "specify a conformance container image of your choice.")
 	viper.BindPFlag("conformance-image", rootCmd.Flags().Lookup("conformance-image"))
 
-	rootCmd.Flags().StringVar(&busyboxImage, "busybox-image", "", "specify an alternate busybox container image.")
+	rootCmd.Flags().StringVar(&busyboxImage, "busybox-image", common.BusyboxImage, "specify an alternate busybox container image.")
 	viper.BindPFlag("busybox-image", rootCmd.Flags().Lookup("busybox-image"))
 
-	rootCmd.Flags().StringVar(&namespace, "namespace", "", "the namespace where the conformance pod is created.")
+	rootCmd.Flags().StringVar(&namespace, "namespace", common.DefaultNamespace, "the namespace where the conformance pod is created.")
 	viper.BindPFlag("namespace", rootCmd.Flags().Lookup("namespace"))
 
 	rootCmd.Flags().BoolVar(&dryRun, "dry-run", false, "run in dry run mode.")

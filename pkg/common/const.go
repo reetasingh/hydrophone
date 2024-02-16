@@ -18,7 +18,7 @@ package common
 
 const (
 	// busyboxImage is the image used to extract the e2e logs
-	busyboxImage = "registry.k8s.io/e2e-test-images/busybox:1.36.1-1"
+	BusyboxImage = "registry.k8s.io/e2e-test-images/busybox:1.36.1-1"
 	// DefaultNamespace is the default namespace where the conformance pod is created
 	DefaultNamespace = "conformance"
 	// PodName is the name of the conformance pod
@@ -33,4 +33,6 @@ const (
 	ConformanceContainer = "conformance-container"
 	// OutputContainer is the name of the busybox container
 	OutputContainer = "output-container"
+	// DefaultFocus is the default focus for the conformance tests
+	DefaultFocus = "\\[Conformance\\]"
 )

@@ -47,30 +47,14 @@ func PrintInfo(clientSet *kubernetes.Clientset, config *rest.Config) {
 	if viper.Get("conformance-image") == "" {
 		viper.Set("conformance-image", fmt.Sprintf("registry.k8s.io/conformance:%s", trimmedVersion))
 	}
-	if viper.Get("busybox-image") == "" {
-		viper.Set("busybox-image", busyboxImage)
-	}
 
 	log.PrintfAPI("API endpoint : %s", config.Host)
 	log.Printf("Server version : %#v", *serverVersion)
 }
 
-func SetDefaultNamespace() {
-	if viper.Get("namespace") == "" {
-		viper.Set("namespace", DefaultNamespace)
-	}
-}
-
 // ValidateArgs validates the arguments passed to the program
 // and creates the output directory if it doesn't exist
-
 func ValidateArgs() error {
-	if viper.Get("namespace") == "" {
-		viper.Set("namespace", DefaultNamespace)
-	}
-	if viper.Get("focus") == "" {
-		viper.Set("focus", "\\[Conformance\\]")
-	}
 
 	if viper.Get("skip") != "" {
 		log.Printf("Skipping tests : '%s'", viper.Get("skip"))

@@ -31,26 +31,13 @@ func TestValidateArgs(t *testing.T) {
 	// Set up the test cases
 	testCases := []struct {
 		name          string
-		focus         string
-		expectedFocus string
 		extraArgs     []string
 		expectedArgs  []string
 		wantErr       bool
 		expectedErr   string
 	}{
 		{
-			name:          "With focus",
-			focus:         "\\[E2E\\]",
-			expectedFocus: "\\[E2E\\]",
-			extraArgs:     []string{},
-			expectedArgs:  []string{},
-			wantErr:       false,
-			expectedErr:   "",
-		},
-		{
 			name:          "With extra args",
-			focus:         "",
-			expectedFocus: "\\[Conformance\\]",
 			extraArgs:     []string{"--key1=value1", "--key2=value2"},
 			expectedArgs:  []string{"--key1=value1", "--key2=value2"},
 			wantErr:       false,
@@ -58,8 +45,6 @@ func TestValidateArgs(t *testing.T) {
 		},
 		{
 			name:          "Invalid extra args format",
-			focus:         "",
-			expectedFocus: "\\[Conformance\\]",
 			extraArgs:     []string{"invalid-arg"},
 			expectedArgs:  []string{},
 			wantErr:       true,
@@ -67,8 +52,6 @@ func TestValidateArgs(t *testing.T) {
 		},
 		{
 			name:          "Extra args with missing values",
-			focus:         "",
-			expectedFocus: "\\[Conformance\\]",
 			extraArgs:     []string{"--key1=value1", "--key2"},
 			expectedArgs:  []string{},
 			wantErr:       true,
@@ -76,8 +59,6 @@ func TestValidateArgs(t *testing.T) {
 		},
 		{
 			name:          "Extra args with invalid key format",
-			focus:         "",
-			expectedFocus: "\\[Conformance\\]",
 			extraArgs:     []string{"key1=value1", "--key2=value2"},
 			expectedArgs:  []string{},
 			wantErr:       true,
@@ -89,7 +70,6 @@ func TestValidateArgs(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Set up the test environment
-			viper.Set("focus", tc.focus)
 			viper.Set("extra-args", tc.extraArgs)
 
 			// Call the function under test
@@ -98,7 +78,6 @@ func TestValidateArgs(t *testing.T) {
 				assert.EqualError(t, err, tc.expectedErr)
 			} else {
 				assert.Nil(t, err)
-				assert.Equal(t, viper.GetString("focus"), tc.expectedFocus)
 				assert.Equal(t, viper.GetStringSlice("extra-args"), tc.expectedArgs)
 			}
 		})
